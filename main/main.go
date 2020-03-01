@@ -18,6 +18,7 @@ import (
 	_ "v2ray.com/core/main/distro/all"
 )
 
+// 命令行参数解析
 var (
 	configFile = flag.String("config", "", "Config file for V2Ray.")
 	version    = flag.Bool("version", false, "Show current version of V2Ray.")
@@ -25,11 +26,13 @@ var (
 	format     = flag.String("format", "json", "Format of input file.")
 )
 
+// 判断文件是否存在
 func fileExists(file string) bool {
 	info, err := os.Stat(file)
 	return err == nil && !info.IsDir()
 }
 
+// 获取配置文件的绝对路径
 func getConfigFilePath() string {
 	if len(*configFile) > 0 {
 		return *configFile
@@ -49,6 +52,7 @@ func getConfigFilePath() string {
 	return ""
 }
 
+// 获取配置文件的格式
 func GetConfigFormat() string {
 	switch strings.ToLower(*format) {
 	case "pb", "protobuf":

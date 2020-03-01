@@ -45,6 +45,7 @@ func RegisterConfigLoader(format *ConfigFormat) error {
 	return nil
 }
 
+// 获取文件的扩展名
 func getExtension(filename string) string {
 	idx := strings.LastIndexByte(filename, '.')
 	if idx == -1 {
