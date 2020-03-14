@@ -20,11 +20,13 @@ import (
 )
 
 // Server is an instance of V2Ray. At any time, there must be at most one Server instance running.
+// Server是V2Ray的一个实例。任何时刻，最多只能有一个Server实例在运行。
 type Server interface {
 	common.Runnable
 }
 
 // ServerType returns the type of the server.
+// ServerType 返回server的类型
 func ServerType() interface{} {
 	return (*Instance)(nil)
 }
@@ -87,6 +89,7 @@ func (r *resolution) resolve(allFeatures []features.Feature) (bool, error) {
 }
 
 // Instance combines all functionalities in V2Ray.
+// Instance绑定了V2Ray的所有功能。
 type Instance struct {
 	access             sync.Mutex
 	features           []features.Feature
@@ -94,6 +97,7 @@ type Instance struct {
 	running            bool
 }
 
+// AddInboundHandler 添加入站处理器
 func AddInboundHandler(server *Instance, config *InboundHandlerConfig) error {
 	inboundManager := server.GetFeature(inbound.ManagerType()).(inbound.Manager)
 	rawHandler, err := CreateObject(server, config)
@@ -299,6 +303,7 @@ func (s *Instance) AddFeature(feature features.Feature) error {
 }
 
 // GetFeature returns a feature of the given type, or nil if such feature is not registered.
+// GetFeature 返回给定类型的一个feature，如果此feature没有注册则返回nil。
 func (s *Instance) GetFeature(featureType interface{}) features.Feature {
 	return getFeature(s.features, reflect.TypeOf(featureType))
 }

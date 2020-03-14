@@ -10,48 +10,68 @@ import "v2ray.com/core/common/serial/typed_message.proto";
 import "v2ray.com/core/transport/config.proto";
 
 // Config is the master config of V2Ray. V2Ray takes this config as input and functions accordingly.
+// Config是V2Ray的主配置。V2Ray将此配置作为输入然后运行对应的功能。
 message Config {
   // Inbound handler configurations. Must have at least one item.
+  // 入站处理器配置。必需至少有一项。
   repeated InboundHandlerConfig inbound = 1;
 
   // Outbound handler configurations. Must have at least one item. The first item is used as default for routing.
+  // 出站处理器配置。必需至少有一项。第一项默认用来路由。
   repeated OutboundHandlerConfig outbound = 2;
 
   reserved 3;
 
-  // App is for configurations of all features in V2Ray. A feature must implement the Feature interface, and its config type must be registered through common.RegisterConfig.
+  // App is for configurations of all features in V2Ray. A feature must implement the Feature interface,
+  // and its config type must be registered through common.RegisterConfig.
+  // App用来配置V2Ray中的所有特性。一个特性必需实现Feature接口，并且它的配置类型必需通过common.RegisterConfig注册。
   repeated v2ray.core.common.serial.TypedMessage app = 4;
 
   // Transport settings.
   // Deprecated. Each inbound and outbound should choose their own transport config.
-  // Date to remove: 2020-01-13 
+  // Date to remove: 2020-01-13
+  // 传输设置。
+  // 不推荐使用。每个入站和出站都应该配置自己的传输设置。
+  // 移除截止日期：2020-01-13
   v2ray.core.transport.Config transport = 5 [deprecated = true];
 
   // Configuration for extensions. The config may not work if corresponding extension is not loaded into V2Ray.
   // V2Ray will ignore such config during initialization.
+  // 插件配置。如果对应的插件没有加载进V2Ray该配置可能不会生效。
+  // V2Ray在初始化阶段将会忽略此配置。
   repeated v2ray.core.common.serial.TypedMessage extension = 6;
 }
 
 // InboundHandlerConfig is the configuration for inbound handler.
+// InboundHandlerConfig是入站处理器的配置。
 message InboundHandlerConfig {
   // Tag of the inbound handler. The tag must be unique among all inbound handlers
+  // 入站处理器的标志。该标志必需在所有的入站处理器中唯一。
   string tag = 1;
   // Settings for how this inbound proxy is handled.
+  // 用来控制入站代理如何处理的设置。
   v2ray.core.common.serial.TypedMessage receiver_settings = 2;
   // Settings for inbound proxy. Must be one of the inbound proxies.
+  // 入站代理设置。必须是所有入站代理的其中之一。
   v2ray.core.common.serial.TypedMessage proxy_settings = 3;
 }
 
 // OutboundHandlerConfig is the configuration for outbound handler.
+// OutboundHandlerConfig是出站处理器的配置。
 message OutboundHandlerConfig {
   // Tag of this outbound handler.
+  // 该出站处理器的标志。
   string tag = 1;
   // Settings for how to dial connection for this outbound handler.
+  // 如何连接此出站处理器的设置。
   v2ray.core.common.serial.TypedMessage sender_settings = 2;
   // Settings for this outbound proxy. Must be one of the outbound proxies.
+  // 出站代理设置。必须是所有出站代理其中之一。
   v2ray.core.common.serial.TypedMessage proxy_settings = 3;
   // If not zero, this outbound will be expired in seconds. Not used for now.
+  // 如果不是0，该出站将会在expire秒后过期。暂时未使用。
   int64 expire = 4;
   // Comment of this outbound handler. Not used for now.
+  // 该出站处理器的注释。暂时未使用。
   string comment = 5;
 }
